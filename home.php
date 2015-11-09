@@ -11,11 +11,13 @@
     ?>
     
     <div class="body">
-        <!-- Body -->
+        <canvas  width="600" height="800" id="beastBash"></canvas>
     </div>
     
     <?php
         include("footer.php");
     ?>
+    
+    <script src="beastBash.js"></script>
 </body>
 </html>
