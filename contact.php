@@ -10,14 +10,16 @@
         include("header.php");
     ?>
     
-    <div class="body">
-        <canvas  width="778px" height="560px" id="beastBash"></canvas>
+    <div class="contact">
+        <h1>Contact</h1>
+        <p>Email: myerss12@ferriss.edu</p>
     </div>
     
+    <div class="small">
     <?php
         include("footer.php");
     ?>
-    
-    <script src="beastBash.js"></script>
+    </div>
+
 </body>
 </html>

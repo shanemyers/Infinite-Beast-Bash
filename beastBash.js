@@ -27,6 +27,19 @@
     var isMouseDown = false;
     var bounds = canv.getBoundingClientRect();
     
+    var state = -1;
+    var btns = [];
+    
+    var selecting = false;
+    var first = true;
+    var marginTop = 100;
+    var enemiesExist = false;
+        var marginLeft = 200;
+        
+        var barLength = 200;
+        
+        var hor = canv.width - marginLeft * 2;
+        var vert = 60;
     
 	/* ------------------------------------------------ Objects -----------------------------------------------*/
 	
@@ -104,17 +117,169 @@
 		};
 	}
 	
-	
+	function battleInfo(g){
+         
+        var barLength = 200;
+        
+        g.save
+        // background
+        g.fillStyle = "#FFF";
+        g.fillRect(0, 0, canv.width, 60);
+        g.fillStyle = "#DDD";
+        g.fillRect(0, 0, barLength, 60);
+     
+        g.fillStyle = "#CCC";
+        g.fillRect(barLength, 0, barLength, 60);
+     
+        g.fillStyle = "#AAA";
+        g.fillRect(barLength* 2, 0, barLength, 60);
+        
+        g.fillStyle = "#111";
+        g.font ="20px Arial";
+        g.textBaseline="middle";
+        g.textAlign="center";
+        g.fillText("INFO", marginLeft + hor/2, marginTop - 70, 300);
+        
+        g.restore();
+	}
+    function restInfo(g){
+        
+        g.save();
+		
+        g.fillStyle = "#DDD";
+        g.font ="20px Arial";
+        g.textBaseline="middle";
+        g.textAlign="center";
+        g.fillText("Upgrade", marginLeft + hor/2, marginTop - 40, 300);
+        
+        // background
+        g.fillStyle = "#FFF";
+        g.fillRect(marginLeft, marginTop, hor, canv.height - marginTop * 2);
+        
+        g.fillStyle = "#DDD";
+        g.fillRect(marginLeft, marginTop, hor, vert);
+        
+        g.fillStyle = "#CCC";
+        g.fillRect(marginLeft, marginTop + vert, hor, vert);
+        
+        g.fillStyle = "#AAA";
+        g.fillRect(marginLeft, marginTop + vert * 2, hor, vert);
+        
+        
+        
+        g.fillStyle = "#DDD";
+        g.fillRect(marginLeft, marginTop + vert * 3, hor, vert);
+        
+        g.fillStyle = "#CCC";
+        g.fillRect(marginLeft, marginTop + vert * 4, hor, vert);
+        g.fillStyle = "#AAA";
+        g.fillRect(marginLeft, marginTop + vert * 5, hor, vert);
+        
+        
+        //g.fillStyle = "#CCC";
+        //g.fillRect(marginLeft + hor/4, marginTop + vert * 6.1, hor / 2, vert);
+        
+        //g.fillStyle = "#222";
+        //g.fillText("Bash", marginLeft + hor/2, marginTop + vert * 6.1 + vert/2, 300);
+        
+        g.restore();
+	}
+    
+    
+    function button(id, x, y, w, h, strng){
+        this.id = id;
+		this.x = x;
+		this.y = y;
+        this.h = h;
+        this.w = w;
+        this.dead = false;
+		
+        // the update logic for this object
+        // dt: the delta time of this frame
+        // retun: null
+		this.draw = function(g){
+			g.save();
+            
+            if(this.id === 9 && selecting === false){
+                g.globalAlpha = .5;
+            }
+            
+			g.font ="20px Arial";
+            g.textBaseline="middle";
+            g.textAlign="center";
+            
+			g.fillStyle = "#CCC";
+            g.fillRect(x - w/2, y - h/2, w, h);
+            //g.fillRect(0, 0, 20, 20);
+            
+        
+            g.fillStyle = "#222";
+            g.fillText(strng, x, y, 300);
+			
+			g.restore();
+		};
+        
+        this.clicked = function(){
+            if(this.id === 0){
+                console.log("yep");
+                toBattle();
+            }
+            else if(this.id === 1){
+                console.log("lol");
+                toRest();
+            }
+            else if(this.id === 5){
+                selecting = true;
+            }
+            else if(this.id === 9 && selecting === true){
+                selecting = false;
+                this.dead = true;
+            }
+        }
+		
+	}
 	/* -------------------------------------------Event Functions-------------------------------------------*/
 	
+    function toRest(){
+        state = 1;
+        console.log("lolsss");
+        removeBtns();
+         
+        btns.push(new button(0, canv.width/2,  marginTop + vert * 6.1 + vert/2, hor/2, vert, "Bash"));
+		
+	}
+    function toBattle(){
+        enemiesExist = true;
+        state = 0;
+		removeBtns();
+        console.log("yeps");
+        
+        
+        var temp = new button(5, 390,  150, 100, 100, "ATK");
+        btns.push(temp);
+        
+        
+        temp = new button(9, 250,  350, 100, 100, "EN");
+        btns.push(temp);
+        temp = new button(9, 390,  350, 100, 100, "EN");
+        btns.push(temp);
+        temp = new button(9, 530,  350, 100, 100, "EN");
+        btns.push(temp);
+        
+		temp = new button(1, canv.width/6,  marginTop + vert * 6.1 + vert/2, hor/2, vert, "bop");
+        btns.push(temp);
+        
+	}
+    function removeBtns(){
+        btns = [];
+    }
 	// Track the mouse cursor
 	canv.addEventListener("mousemove", function(e){  
         bounds = canv.getBoundingClientRect();
         
         mouse.x = e.clientX - bounds.left;
         mouse.y = e.clientY - bounds.top;
-        
-        console.log("top: " + mouse.y + " :: doc: " + document);
+
     });
     
     // track whenever the mouse is pressed down
@@ -129,13 +294,22 @@
     
     // track a completed mouse click
 	canv.addEventListener("click", function(e){
+        for(var i = 0; i < btns.length; i++)
+        {
+            if(mouse.x < btns[i].x + btns[i].w/2 && mouse.x > btns[i].x - btns[i].w/2 &&
+               mouse.y < btns[i].y + btns[i].h/2 && mouse.y > btns[i].y - btns[i].h/2){
 
+                btns[i].clicked();
+            }
+        }
 
 	});
 	
 	/* ----------------------------------------------------Game Loop -----------------------------------------*/
 	
 	var ptime = 0;
+    
+    
     
     // the main gameloop of the game
     // time: the time since the start of the code
@@ -157,16 +331,51 @@
     // dt: the delta time of each frame
     // return: null
 	function update(dt){
-		
+            
+        if(first){
+            toBattle();
+            first = false;
+        }
         
+        if(state === 0){
+        
+        for(var i = btns.length - 1; i >= 0; i--){
+            if(btns[i].id === 9 && btns[i].dead === false){
+                enemiesExist = true;
+            }
+            if(btns[i].dead === true){
+                btns.splice(i, 1);
+            }
+        }
+        
+            if(enemiesExist === false){
+                console.log("lol");
+                toRest();
+            }
+            
+            enemiesExist = false;
+        }
         //console.clear();
+        
     }
     
     // main draw function for the game
     // return: null
     function draw(){
         graphics.clearRect(0,0, canv.width, canv.height);
-		
+        if(state === 0)
+        {
+            battleInfo(graphics);
+        }
+        else if(state === 1)
+        {
+            restInfo(graphics);
+        }
+        for(var i = 0; i < btns.length; i++)
+        {
+            btns[i].draw(graphics);
+        }
+        
     }
     gameloop();
     

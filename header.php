@@ -6,15 +6,16 @@
 
 <div class="header">
     
-    <h1>Infinite Beast Bash</h1>
+    <a href="home.php" class="title"></a>
     
     <div>
+
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="home.php">Home</a></li>
             </ul>
         </nav>
-    
-        <a href="#" class="login">Login</a>
+
+        <a href="login.php" class="login">Login</a>
     </div>
 </div>

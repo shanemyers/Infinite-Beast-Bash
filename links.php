@@ -10,14 +10,17 @@
         include("header.php");
     ?>
     
-    <div class="body">
-        <canvas  width="778px" height="560px" id="beastBash"></canvas>
+    <div class="link">
+        <h1>Links</h1>
+        <a href="#">TEMP: Link to Gordon Yasmar</a>
+        <a href="#">TEMP: Link to carzy cruiser minigame</a>
     </div>
     
+    <div class="small">
     <?php
         include("footer.php");
     ?>
-    
-    <script src="beastBash.js"></script>
+    </div>
+
 </body>
 </html>
