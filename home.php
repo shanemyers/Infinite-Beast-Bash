@@ -6,12 +6,14 @@
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
+    <script src="pixi.min.js"></script>
+    
     <?php
         include("header.php");
     ?>
     
-    <div class="body">
-        <canvas  width="778px" height="560px" id="beastBash"></canvas>
+    <div id="body">
+        <!-- <canvas  width="778px" height="560px" id="beastBash"></canvas> -->
     </div>
     
     <?php

@@ -84,14 +84,14 @@ div.header a.login:hover{
 
 
 /* ------------ home ------------*/
-div.body canvas{
+div#body canvas{
     display: block;
     background: #111;
     margin: 20px auto;
 }
 
 /* ------------ Login -------------*/
-div.body form{
+div#body form{
     display: block;
     background: #a71697;
     height:250px;
@@ -99,10 +99,10 @@ div.body form{
     margin: 40px auto;
     box-shadow: 0px 3px 10px #111;
 }
-div.body form div h1{
+div#body form div h1{
     
 }
-div.body form div{
+div#body form div{
     display: block;
     margin: 0 auto;
     width: 300px;

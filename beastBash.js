@@ -3,14 +3,152 @@
 // DAGD 460 Multimedia 2
 //
 
+
+
+
 // function holding the main game
 (function(){
     
     /* ----------------------------------------Initilize variables-----------------------------------------*/
-	
-    var canv = document.getElementById("beastBash");
-    var graphics = canv.getContext("2d");
+
     
+    var state;
+    
+
+    // Make PIXI aliases for quicker typing
+    var Container = PIXI.Container,
+    autoDetectRenderer = PIXI.autoDetectRenderer,
+    loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    Sprite = PIXI.Sprite;
+    
+    
+    // Set up PIXI canvas
+    //Create the renderer
+    var c = document.getElementById("body");
+    var renderer = autoDetectRenderer(778, 560);
+    
+    //Add the canvas to the HTML document
+    var canv = c.appendChild(renderer.view);
+    
+    // Make a loading area for all used images
+    PIXI.loader
+        .add("imgs/plus.png")
+        .load(setup);
+
+    
+
+    var graphics = canv.getContext("2d");    
+    
+    //Create a container object called the `stage`
+    var stage = new PIXI.Container();
+    
+    var testSprite = null;
+    
+    function setup() {
+        testSprite = new PIXI.Sprite(
+            resources["imgs/plus.png"].texture
+        );
+        
+        testSprite.x = 200;
+        testSprite.y = 100;
+        
+        
+        bttlScene = new Container();
+        stage.addChild(bttlScene);
+        
+        restScene = new Container();
+        stage.addChild(restScene);
+        
+        overScene = new Container();
+        stage.addChild(overScene);
+        
+        toBattle();
+
+        gameLoop();
+    } 
+    
+    function gameLoop(){
+        requestAnimationFrame(gameLoop);
+        
+        //testSprite.x++;
+        
+        //console.log(testSprite.x);
+        
+        state();
+        
+        renderer.render(stage);
+    }
+    
+    function toBattle(){
+        
+        // generate the enemies for the bttlscene
+        bttlScene.addChild(testSprite);
+        
+        bttlScene.visible = true;
+        restScene.visible = false;
+        overScene.visible = false;
+        
+        state = battle;
+    }
+    
+    var count = 0;
+    
+    function battle(){
+        // handle any battle scene logic
+        count++;
+        
+        if(count > 400){
+            console.log("Change");
+            count = 0;
+            toRest();
+        }
+        else{
+            console.log("here");
+        }
+    }
+    
+    function toRest(){
+        
+        // generate the enemies for the bttlscene
+        
+        bttlScene.visible = false;
+        restScene.visible = true;
+        overScene.visible = false;
+        
+        state = rest;
+    }
+    function rest(){
+        // handle any rest scene logic        
+        count++;
+        
+        if(count > 300){
+            count = 0;
+            console.log("to battle");
+            toBattle();
+        }
+        else{
+            console.log("rest in");
+        }
+    }
+    
+    function toOver(){
+        
+        // generate the enemies for the bttlscene
+        
+        bttlScene.visible = false;
+        restScene.visible = false;
+        overScene.visible = true;
+        
+        state = over;
+    }
+    function over(){
+        // handle any over scene logic
+        testSprite.x += testSprite.vx;
+    }
+
+    
+    /*
     var requestAnimFrame = (function(){
         // return must be on the same line at the data
         return window.requestAnimationFrame || 
@@ -40,7 +178,7 @@
         
         var hor = canv.width - marginLeft * 2;
         var vert = 60;
-    
+    */
 	/* ------------------------------------------------ Objects -----------------------------------------------*/
 	
     
@@ -72,7 +210,7 @@
 	}
 	*/
     
-    
+    /*
     // Create a sprite object
     // used as the base to the other object functions
     // url: The string url of the target sprite image's file location
@@ -238,8 +376,47 @@
         }
 		
 	}
+    
+    
+    function NPC(){
+        // sprite reference
+        // name
+        // position x
+        // position y
+        // health
+        // attack
+        // defense
+        // speed
+        
+		
+        // the update logic for this object
+        // dt: the delta time of this frame
+        // retun: null
+		this.draw = function(g){
+			g.save();
+            
+            if(this.id === 9 && selecting === false){
+                g.globalAlpha = .5;
+            }
+            
+			g.font ="20px Arial";
+            g.textBaseline="middle";
+            g.textAlign="center";
+            
+			g.fillStyle = "#CCC";
+            g.fillRect(x - w/2, y - h/2, w, h);
+            //g.fillRect(0, 0, 20, 20);
+            
+        
+            g.fillStyle = "#222";
+            g.fillText(strng, x, y, 300);
+			
+			g.restore();
+		};
+		
+	}
 	/* -------------------------------------------Event Functions-------------------------------------------*/
-	
+	/*
     function toRest(){
         state = 1;
         console.log("lolsss");
@@ -306,7 +483,7 @@
 	});
 	
 	/* ----------------------------------------------------Game Loop -----------------------------------------*/
-	
+	/*
 	var ptime = 0;
     
     
@@ -362,7 +539,7 @@
     // main draw function for the game
     // return: null
     function draw(){
-        graphics.clearRect(0,0, canv.width, canv.height);
+        /*graphics.clearRect(0,0, canv.width, canv.height);
         if(state === 0)
         {
             battleInfo(graphics);
@@ -375,9 +552,8 @@
         {
             btns[i].draw(graphics);
         }
-        
-    }
-    gameloop();
-    
+        */
+    //}
+    //gameloop();
     
 })();
