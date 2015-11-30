@@ -6,7 +6,8 @@
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-    <script src="pixi.min.js"></script>
+    <!-- <script src="pixi.min.js"></script> -->
+    <script src="phaser.min.js"></script>
     
     <?php
         include("header.php");

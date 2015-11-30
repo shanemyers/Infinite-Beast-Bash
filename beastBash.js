@@ -9,8 +9,57 @@
 // function holding the main game
 (function(){
     
+    
+    
+    /* --------------------------------------------------------------------------------------------------- */
+    
+    
+    var game = new Phaser.Game(800,600, Phaser.AUTO, '');
+        
+        var main = function(){
+            
+            var cat;
+            
+            this.preload = function(){
+                game.load.image("plus", "imgs/plus.png");
+                game.load.image("plar", "imgs/usr.png");
+                game.load.image("mon1", "imgs/mon1.png");
+                game.load.image("swrd", "imgs/sword.png");
+                game.load.image("bar", "imgs/bar.png");
+            };
+            this.create = function(){
+                cat = game.add.sprite(400, 300, 'bar');
+                cat.anchor = new PIXI.Point(.5, .5);
+                //cat.angle = 45;
+            };
+            this.update = function(){
+                cat.position.x = game.input.x;
+                cat.position.y = game.input.y;
+                //cat.angle += 50;
+            
+            };
+            this.render = function(){};
+                                   
+        }
+        
+        game.state.add("Main", main);
+        game.state.start("Main");
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /* ----------------------------------------Initilize variables-----------------------------------------*/
 
+    
+    
+    
+    
+    /*
     
     var state;
     
@@ -27,6 +76,8 @@
     //Create the renderer
     var c = document.getElementById("body");
     var renderer = autoDetectRenderer(778, 560);
+    var interact = new PIXI.interaction.InteractionManager(renderer);
+    
     
     //Add the canvas to the HTML document
     var canv = c.appendChild(renderer.view);
@@ -34,6 +85,10 @@
     // Make a loading area for all used images
     PIXI.loader
         .add("imgs/plus.png")
+        .add("imgs/usr.png")
+        .add("imgs/mon1.png")
+        .add("imgs/sword.png")
+        .add("imgs/bar.png")
         .load(setup);
 
     
@@ -44,14 +99,26 @@
     var stage = new PIXI.Container();
     
     var testSprite = null;
+    var player = null;
+    var npc;
+    
     
     function setup() {
         testSprite = new PIXI.Sprite(
             resources["imgs/plus.png"].texture
         );
         
+        player = new PIXI.Sprite(
+            resources["imgs/usr.png"].texture
+        );
+        
+        bar = new PIXI.Sprite(
+            resources["imgs/bar.png"].texture
+        );
+        
         testSprite.x = 200;
         testSprite.y = 100;
+        //testSprite.setInteractive(true);
         
         
         bttlScene = new Container();
@@ -63,8 +130,19 @@
         overScene = new Container();
         stage.addChild(overScene);
         
+        menu = new Container();
+        stage.addChild(menu);
+        
+        player = new Player(player, 400, 400);
+        
+        // generate the enemies for the bttlscene
+        bttlScene.addChild(testSprite);
+        
+        
+        setMenu();
+        
         toBattle();
-
+        
         gameLoop();
     } 
     
@@ -82,8 +160,14 @@
     
     function toBattle(){
         
-        // generate the enemies for the bttlscene
-        bttlScene.addChild(testSprite);
+        //npc = new NPC(player);
+        //npc.s = player;
+        //npc.s.x = 300;
+        //npc.s.y = 200;
+        //console.log(npc.s);
+        //console.log(player);
+        //bttlScene.addChild(npc.s);
+        
         
         bttlScene.visible = true;
         restScene.visible = false;
@@ -146,7 +230,108 @@
         // handle any over scene logic
         testSprite.x += testSprite.vx;
     }
-
+    
+    function setMenu(){
+        
+        var outerBar = new PIXI.Graphics();
+        outerBar.beginFill(0xbd2121);
+        outerBar.drawRect(0, 0, 128, 64);
+        outerBar.endFill();
+        menu.addChild(outerBar);
+        
+        
+        var otherBar = new PIXI.Graphics();
+        outerBar.beginFill(0x0000aa);
+        outerBar.drawRect(200, 0, 128, 64);
+        outerBar.endFill();
+        menu.addChild(outerBar);
+        
+        menu.addChild(bar);
+    }
+    
+    /* ------------------------------- objects ----------------------------- */
+    
+    function NPC(sprite){
+        this.s = sprite;
+        this.s.x = 0;
+        this.s.y = 0;
+        this.s.anchorx = .5;
+        this.s.anchory = .5;
+        
+        this.name;
+        this.health;
+        this.atk;
+        this.def;
+        this.spd;
+	}
+    
+    function Player(sprite, x, y){
+        var obj = new NPC(player);
+        obj.name = name;
+        obj.s.x = x;
+        obj.s.y = y;
+        // sprite reference
+        // name
+        // position x
+        // position y
+        // health
+        // attack
+        // defense
+        // speed
+        
+        bttlScene.addChild(obj.s);
+	}
+        
+    function Enemy(sprite, x, y){
+        var obj = new NPC(player);
+        obj.name = name;
+        obj.x = x;
+        obj.y = y;
+        // sprite reference
+        // name
+        // position x
+        // position y
+        // health
+        // attack
+        // defense
+        // speed	
+	}
+        
+    function Button(sprite, id){
+        var sprite = sprite;
+        
+        // sprite reference
+        // name
+        // position x
+        // position y
+        // health
+        // attack
+        // defense
+        // speed
+		
+	}
+    
+    function Attack(attacker, defender){
+        
+        var missed = false;
+        
+        if(defender.spd > attacker.spd){
+            // chance to miss the attack
+        }
+        
+        if(missed === false)
+        {
+            if(defender.def > attacker.atk){
+                defender.health--;
+            }
+            else{
+                defender.health -= (attacker.atk - defender.def);
+            }
+        }
+        
+        // check if defender died
+        
+    }
     
     /*
     var requestAnimFrame = (function(){
@@ -387,32 +572,6 @@
         // attack
         // defense
         // speed
-        
-		
-        // the update logic for this object
-        // dt: the delta time of this frame
-        // retun: null
-		this.draw = function(g){
-			g.save();
-            
-            if(this.id === 9 && selecting === false){
-                g.globalAlpha = .5;
-            }
-            
-			g.font ="20px Arial";
-            g.textBaseline="middle";
-            g.textAlign="center";
-            
-			g.fillStyle = "#CCC";
-            g.fillRect(x - w/2, y - h/2, w, h);
-            //g.fillRect(0, 0, 20, 20);
-            
-        
-            g.fillStyle = "#222";
-            g.fillText(strng, x, y, 300);
-			
-			g.restore();
-		};
 		
 	}
 	/* -------------------------------------------Event Functions-------------------------------------------*/
