@@ -1,3 +1,9 @@
+<!-- Infinite Beast Bash
+
+    DAGD 460 Multimedia 2
+    Shane Myers
+    12/13/2015 -->
+
 <!doctype html>
 <html>
 <head>
@@ -12,8 +18,7 @@
     
     <div class="link">
         <h1>Links</h1>
-        <a href="#">TEMP: Link to Gordon Yasmar</a>
-        <a href="#">TEMP: Link to carzy cruiser minigame</a>
+        <a href="http://www.gordonyasmar.com/">Gordon Yasmar</a>
     </div>
     
     <div class="small">

@@ -1,5 +1,9 @@
 <?php
+/* Infinite Beast Bash
 
+    DAGD 460 Multimedia 2
+    Shane Myers
+    12/13/2015 */
 
 ?>
 
@@ -16,6 +20,6 @@
             </ul>
         </nav>
 
-        <a href="login.php" class="login">Login</a>
+        <!--<a href="login.php" class="login">Login</a>-->
     </div>
 </div>

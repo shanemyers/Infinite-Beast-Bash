@@ -1,3 +1,9 @@
+<!-- Infinite Beast Bash
+
+    DAGD 460 Multimedia 2
+    Shane Myers
+    12/13/2015 -->
+
 <!doctype html>
 <html>
 <head>
